@@ -1,5 +1,6 @@
 package com.wearhouse.bankproject.config;
 
+import jakarta.persistence.EntityManagerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -13,7 +14,6 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.repository.operational",
+        basePackages = "com.wearhouse.bankproject.operational.repository", // korrigjuar
         entityManagerFactoryRef = "operationalEntityManagerFactory",
         transactionManagerRef = "operationalTransactionManager"
 )
@@ -40,14 +40,15 @@ public class OperationalDbConfig {
     @Primary
     @Bean(name = "operationalEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
-            EntityManagerFactoryBuilder builder, @Qualifier("operationalDataSource") DataSource dataSource) {
+            EntityManagerFactoryBuilder builder,
+            @Qualifier("operationalDataSource") DataSource dataSource) {
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", "update");
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.model.operational")
+                .packages("com.wearhouse.bankproject.operational.entity") // korrigjuar
                 .persistenceUnit("operational")
                 .properties(properties)
                 .build();

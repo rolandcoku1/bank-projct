@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/etl")
 public class EtlController {
 
 
@@ -19,7 +19,7 @@ public class EtlController {
         this.riskService = riskService;
     }
 
-    @GetMapping("/run-etl")
+    @GetMapping("/run")
     public String triggerEtl() {
         try {
             etlService.runEtlProcess();

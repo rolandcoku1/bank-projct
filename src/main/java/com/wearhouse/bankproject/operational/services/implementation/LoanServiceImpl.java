@@ -1,74 +1,89 @@
 package com.wearhouse.bankproject.operational.services.implementation;
+
+import com.wearhouse.bankproject.operational.dto.LoanRequestDTO;
+import com.wearhouse.bankproject.operational.dto.LoanResponseDTO;
+import com.wearhouse.bankproject.operational.dto.MapperDTO;
 import com.wearhouse.bankproject.operational.entity.Loans;
 import com.wearhouse.bankproject.operational.repository.LoanRepository;
 import com.wearhouse.bankproject.operational.services.LoanService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 public class LoanServiceImpl implements LoanService {
 
-    @Autowired
-    private LoanRepository loanRepository;
+    private final LoanRepository loanRepository;
 
-    @Override
-    public Loans createLoan(Loans loan) {
-        if (loan.getStartDate() == null) {
-            loan.setStartDate(LocalDate.now());
-        }
-        if (loan.getStatus() == null) {
-            loan.setStatus("pending");
-        }
-        return loanRepository.save(loan);
+    public LoanServiceImpl(LoanRepository loanRepository) {
+        this.loanRepository = loanRepository;
     }
 
     @Override
-    public Loans updateLoan(Integer id, Loans loan) {
+    public LoanResponseDTO createLoan(LoanRequestDTO dto) {
+        Loans loan = MapperDTO.toLoanEntity(dto);
+        if (loan.getStartDate() == null) loan.setStartDate(LocalDate.now());
+        if (loan.getStatus() == null) loan.setStatus("pending");
+
+        Loans saved = loanRepository.save(loan);
+        return MapperDTO.toLoanResponseDTO(saved);
+    }
+
+    @Override
+    public LoanResponseDTO updateLoan(Integer id, LoanRequestDTO dto) {
         Loans existingLoan = loanRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
 
-        existingLoan.setLoanAmount(loan.getLoanAmount());
-        existingLoan.setInterestRate(loan.getInterestRate());
-        existingLoan.setStatus(loan.getStatus());
+        existingLoan.setLoanAmount(dto.getLoanAmount());
+        existingLoan.setInterestRate(dto.getInterestRate());
+        if (dto.getClientId() != null) existingLoan.getClient().setClientId(dto.getClientId());
 
-        return loanRepository.save(existingLoan);
+        Loans updated = loanRepository.save(existingLoan);
+        return MapperDTO.toLoanResponseDTO(updated);
     }
+
     @Override
     public void deleteLoan(Integer id) {
-        if (!loanRepository.existsById(id)) {
+        if (!loanRepository.existsById(id))
             throw new RuntimeException("Loan not found with id: " + id);
-        }
         loanRepository.deleteById(id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Loans> getLoanById(Integer id) {
-        return loanRepository.findById(id);
+    public LoanResponseDTO getLoanById(Integer id) {
+        Loans loan = loanRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loan not found with id: " + id));
+        return MapperDTO.toLoanResponseDTO(loan);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Loans> getAllLoans() {
-        return loanRepository.findAll();
+    public List<LoanResponseDTO> getAllLoans() {
+        return loanRepository.findAll().stream()
+                .map(MapperDTO::toLoanResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Loans> getLoansByClientId(Integer clientId) {
-        return loanRepository.findByClientClientId(clientId);
+    public List<LoanResponseDTO> getLoansByClientId(Integer clientId) {
+        return loanRepository.findByClientClientId(clientId).stream()
+                .map(MapperDTO::toLoanResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Loans> getActiveLoansByClient(Integer clientId) {
-        return loanRepository.findActiveLoansForClient(clientId);
+    public List<LoanResponseDTO> getActiveLoansByClient(Integer clientId) {
+        return loanRepository.findActiveLoansForClient(clientId).stream()
+                .map(MapperDTO::toLoanResponseDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -79,21 +94,19 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public Loans approveLoan(Integer loanId) {
+    public LoanResponseDTO approveLoan(Integer loanId) {
         Loans loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
-
         loan.setStatus("approved");
         loan.setStartDate(LocalDate.now());
-        return loanRepository.save(loan);
+        return MapperDTO.toLoanResponseDTO(loanRepository.save(loan));
     }
 
     @Override
-    public Loans rejectLoan(Integer loanId) {
+    public LoanResponseDTO rejectLoan(Integer loanId) {
         Loans loan = loanRepository.findById(loanId)
                 .orElseThrow(() -> new RuntimeException("Loan not found with id: " + loanId));
-
         loan.setStatus("rejected");
-        return loanRepository.save(loan);
+        return MapperDTO.toLoanResponseDTO(loanRepository.save(loan));
     }
 }

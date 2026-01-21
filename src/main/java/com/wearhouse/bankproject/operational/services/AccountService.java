@@ -1,19 +1,21 @@
 package com.wearhouse.bankproject.operational.services;
-import com.wearhouse.bankproject.operational.entity.Accounts;
+
+import com.wearhouse.bankproject.operational.dto.AccountRequestDTO;
+import com.wearhouse.bankproject.operational.dto.AccountResponseDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 public interface AccountService {
-    Accounts createAccount(Accounts account);
-    Accounts updateAccount(Integer id, Accounts account);
+    AccountResponseDTO createAccount(AccountRequestDTO dto);
+    AccountResponseDTO updateAccount(Integer id, AccountRequestDTO dto);
     void deleteAccount(Integer id);
-    Optional<Accounts> getAccountById(Integer id);
-    List<Accounts> getAllAccounts();
-    List<Accounts> getAccountsByClientId(Integer clientId);
-    List<Accounts> getActiveAccountsByClient(Integer clientId);
-    Optional<Accounts> getAccountWithTransactions(Integer id);
+    Optional<AccountResponseDTO> getAccountById(Integer id);
+    List<AccountResponseDTO> getAllAccounts();
+    List<AccountResponseDTO> getAccountsByClientId(Integer clientId);
+    List<AccountResponseDTO> getActiveAccountsByClient(Integer clientId);
+    Optional<AccountResponseDTO> getAccountWithTransactions(Integer id);
     BigDecimal getTotalBalanceByClient(Integer clientId);
-    Accounts updateBalance(Integer accountId, BigDecimal amount);
+    AccountResponseDTO updateBalance(Integer accountId, BigDecimal amount);
 }

@@ -1,18 +1,19 @@
 package com.wearhouse.bankproject.operational.services;
-import com.wearhouse.bankproject.operational.entity.Transaction;
-import java.math.BigDecimal;
+
+import com.wearhouse.bankproject.operational.dto.TransactionRequestDTO;
+import com.wearhouse.bankproject.operational.dto.TransactionResponseDTO;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface TransactionService {
-    Transaction createTransaction(Transaction transaction);
-    Optional<Transaction> getTransactionById(Integer id);
-    List<Transaction> getAllTransactions();
-    List<Transaction> getTransactionsByAccountId(Integer accountId);
-    List<Transaction> getTransactionsByUserId(Integer userId);
-    List<Transaction> getTransactionsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
-    Transaction deposit(Integer accountId, BigDecimal amount, Integer userId, String description);
-    Transaction withdraw(Integer accountId, BigDecimal amount, Integer userId, String description);
-    Transaction transfer(Integer fromAccountId, Integer toAccountId, BigDecimal amount, Integer userId, String description);
+    TransactionResponseDTO createTransaction(TransactionRequestDTO dto);
+    TransactionResponseDTO deposit(TransactionRequestDTO dto);
+    TransactionResponseDTO withdraw(TransactionRequestDTO dto);
+    List<TransactionResponseDTO> transfer(TransactionRequestDTO dto);
+    TransactionResponseDTO getTransactionById(Integer id);
+    List<TransactionResponseDTO> getAllTransactions();
+    List<TransactionResponseDTO> getTransactionsByAccountId(Integer accountId);
+    List<TransactionResponseDTO> getTransactionsByUserId(Integer userId);
+    List<TransactionResponseDTO> getTransactionsByDateRange(LocalDateTime startDate, LocalDateTime endDate);
 }

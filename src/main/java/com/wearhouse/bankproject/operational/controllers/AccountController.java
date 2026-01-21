@@ -1,11 +1,13 @@
 package com.wearhouse.bankproject.operational.controllers;
-import com.wearhouse.bankproject.operational.entity.Accounts;
+import com.wearhouse.bankproject.operational.dto.AccountRequestDTO;
+import com.wearhouse.bankproject.operational.dto.AccountResponseDTO;
 import com.wearhouse.bankproject.operational.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -18,84 +20,67 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping
-    public ResponseEntity<Accounts> createAccount(@RequestBody Accounts account) {
+    public ResponseEntity<AccountResponseDTO> createAccount(@RequestBody AccountRequestDTO dto) {
         try {
-            Accounts createdAccount = accountService.createAccount(account);
-            return new ResponseEntity<>(createdAccount, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
+            AccountResponseDTO created = accountService.createAccount(dto);
+            return new ResponseEntity<>(created, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping
-    public ResponseEntity<List<Accounts>> getAllAccounts() {
-        try {
-            List<Accounts> accounts = accountService.getAllAccounts();
-            return new ResponseEntity<>(accounts, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
+        return new ResponseEntity<>(accountService.getAllAccounts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Accounts> getAccountById(@PathVariable Integer id) {
+    public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Integer id) {
         return accountService.getAccountById(id)
-                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
+                .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<Accounts>> getAccountsByClientId(@PathVariable Integer clientId) {
-        try {
-            List<Accounts> accounts = accountService.getAccountsByClientId(clientId);
-            return new ResponseEntity<>(accounts, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<AccountResponseDTO>> getAccountsByClientId(@PathVariable Integer clientId) {
+        return new ResponseEntity<>(accountService.getAccountsByClientId(clientId), HttpStatus.OK);
     }
 
     @GetMapping("/client/{clientId}/active")
-    public ResponseEntity<List<Accounts>> getActiveAccountsByClient(@PathVariable Integer clientId) {
-        try {
-            List<Accounts> accounts = accountService.getActiveAccountsByClient(clientId);
-            return new ResponseEntity<>(accounts, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<AccountResponseDTO>> getActiveAccountsByClient(@PathVariable Integer clientId) {
+        return new ResponseEntity<>(accountService.getActiveAccountsByClient(clientId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/transactions")
-    public ResponseEntity<Accounts> getAccountWithTransactions(@PathVariable Integer id) {
+    public ResponseEntity<AccountResponseDTO> getAccountWithTransactions(@PathVariable Integer id) {
         return accountService.getAccountWithTransactions(id)
-                .map(account -> new ResponseEntity<>(account, HttpStatus.OK))
+                .map(ResponseEntity::ok)
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/client/{clientId}/total-balance")
     public ResponseEntity<BigDecimal> getTotalBalanceByClient(@PathVariable Integer clientId) {
-        try {
-            BigDecimal totalBalance = accountService.getTotalBalanceByClient(clientId);
-            return new ResponseEntity<>(totalBalance, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>((HttpHeaders) null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        BigDecimal total = accountService.getTotalBalanceByClient(clientId);
+        return new ResponseEntity<>(total, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Accounts> updateAccount(@PathVariable Integer id, @RequestBody Accounts account) {
+    public ResponseEntity<AccountResponseDTO> updateAccount(@PathVariable Integer id,
+                                                            @RequestBody AccountRequestDTO dto) {
         try {
-            Accounts updatedAccount = accountService.updateAccount(id, account);
-            return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+            AccountResponseDTO updated = accountService.updateAccount(id, dto);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping("/{id}/balance")
-    public ResponseEntity<Accounts> updateBalance(@PathVariable Integer id, @RequestParam BigDecimal amount) {
+    public ResponseEntity<AccountResponseDTO> updateBalance(@PathVariable Integer id,
+                                                            @RequestParam BigDecimal amount) {
         try {
-            Accounts updatedAccount = accountService.updateBalance(id, amount);
-            return new ResponseEntity<>(updatedAccount, HttpStatus.OK);
+            AccountResponseDTO updated = accountService.updateBalance(id, amount);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>((HttpHeaders) null, HttpStatus.BAD_REQUEST);
         }

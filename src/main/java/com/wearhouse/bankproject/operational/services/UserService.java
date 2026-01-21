@@ -1,15 +1,25 @@
 package com.wearhouse.bankproject.operational.services;
-import com.wearhouse.bankproject.operational.entity.User;
+
+import com.wearhouse.bankproject.operational.dto.UserRequestDTO;
+import com.wearhouse.bankproject.operational.dto.UserResponseDTO;
+
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
-    User createUser(User user);
-    User updateUser(Integer id, User user);
+
+    UserResponseDTO createUser(UserRequestDTO user);
+
+    UserResponseDTO updateUser(Integer id, UserRequestDTO user);
+
     void deleteUser(Integer id);
-    Optional<User> getUserById(Integer id);
-    List<User> getAllUsers();
-    Optional<User> getUserByEmail(String email);
-    List<User> getUsersByRole(String role);
-    List<User> searchUsersByName(String name);
+
+    UserResponseDTO getUserById(Integer id);
+
+    List<UserResponseDTO> getAllUsers();
+
+    UserResponseDTO getUserByEmail(String email);
+
+    List<UserResponseDTO> getUsersByRole(String role);
+
+    List<UserResponseDTO> searchUsersByName(String name);
 }

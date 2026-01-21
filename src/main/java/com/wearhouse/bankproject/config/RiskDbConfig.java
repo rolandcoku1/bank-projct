@@ -38,7 +38,7 @@ public class RiskDbConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("riskDataSource") DataSource dataSource) {
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "update");
+        properties.put("hibernate.hbm2ddl.auto", "none");
 
         return builder
                 .dataSource(dataSource)

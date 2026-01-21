@@ -28,7 +28,7 @@ public class LoanServiceImpl implements LoanService {
     public LoanResponseDTO createLoan(LoanRequestDTO dto) {
         Loan loan = MapperDTO.toLoanEntity(dto);
         if (loan.getStartDate() == null) loan.setStartDate(LocalDate.now());
-        if (loan.getStatus() == null) loan.setStatus("pending");
+        if (loan.getStatus() == null) loan.setStatus("DEFAULT");
 
         Loan saved = loanRepository.save(loan);
         return MapperDTO.toLoanResponseDTO(saved);

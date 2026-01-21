@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.risk.repository",
+        basePackages = "com.wearhouse.bankproject.repository.risk",
         entityManagerFactoryRef = "riskEntityManagerFactory",
         transactionManagerRef = "riskTransactionManager"
 )
@@ -38,11 +38,11 @@ public class RiskDbConfig {
             EntityManagerFactoryBuilder builder, @Qualifier("riskDataSource") DataSource dataSource) {
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "none");
+        properties.put("hibernate.hbm2ddl.auto", "update");
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.risk.entity")
+                .packages("com.wearhouse.bankproject.model.risk")
                 .persistenceUnit("risk")
                 .properties(properties)
                 .build();

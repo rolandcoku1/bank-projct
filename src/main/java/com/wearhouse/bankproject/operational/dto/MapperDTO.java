@@ -30,7 +30,7 @@ public class MapperDTO {
                 .collect(Collectors.toList());
     }
 
-    public static ClientResponseDTO toClientResponseDTO(Client client) {
+    public static ClientResponseDTO toClientResponseDTO(Clients client) {
         if (client == null) return null;
         return new ClientResponseDTO(
                 client.getClientId(),
@@ -42,9 +42,9 @@ public class MapperDTO {
         );
     }
 
-    public static Client toClientEntity(ClientRequestDTO dto) {
+    public static Clients toClientEntity(ClientRequestDTO dto) {
         if (dto == null) return null;
-        Client client = new Client();
+        Clients client = new Clients();
         client.setFullName(dto.getFullName());
         client.setEmail(dto.getEmail());
         client.setPhone(dto.getPhone());
@@ -52,13 +52,13 @@ public class MapperDTO {
         return client;
     }
 
-    public static List<ClientResponseDTO> toClientResponseDTOList(List<Client> clients) {
+    public static List<ClientResponseDTO> toClientResponseDTOList(List<Clients> clients) {
         return clients.stream()
                 .map(MapperDTO::toClientResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public static AccountResponseDTO toAccountResponseDTO(Account account) {
+    public static AccountResponseDTO toAccountResponseDTO(Accounts account) {
         if (account == null) return null;
         return new AccountResponseDTO(
                 account.getAccountId(),
@@ -70,13 +70,13 @@ public class MapperDTO {
         );
     }
 
-    public static List<AccountResponseDTO> toAccountResponseDTOList(List<Account> accounts) {
+    public static List<AccountResponseDTO> toAccountResponseDTOList(List<Accounts> accounts) {
         return accounts.stream()
                 .map(MapperDTO::toAccountResponseDTO)
                 .collect(Collectors.toList());
     }
 
-    public static LoanResponseDTO toLoanResponseDTO(Loan loan) {
+    public static LoanResponseDTO toLoanResponseDTO(Loans loan) {
         if (loan == null) return null;
         return new LoanResponseDTO(
                 loan.getLoanId(),
@@ -89,7 +89,7 @@ public class MapperDTO {
         );
     }
 
-    public static List<LoanResponseDTO> toLoanResponseDTOList(List<Loan> loans) {
+    public static List<LoanResponseDTO> toLoanResponseDTOList(List<Loans> loans) {
         return loans.stream()
                 .map(MapperDTO::toLoanResponseDTO)
                 .collect(Collectors.toList());
@@ -113,11 +113,11 @@ public class MapperDTO {
                 .map(MapperDTO::toTransactionResponseDTO)
                 .collect(Collectors.toList());
     }
-    public static Loan toLoanEntity(LoanRequestDTO dto) {
+    public static Loans toLoanEntity(LoanRequestDTO dto) {
         if (dto == null) return null;
-        Loan loan = new Loan();
+        Loans loan = new Loans();
         if (dto.getClientId() != null) {
-            Client client = new Client();
+            Clients client = new Clients();
             client.setClientId(dto.getClientId());
             loan.setClient(client);
         }
@@ -125,9 +125,9 @@ public class MapperDTO {
         loan.setInterestRate(dto.getInterestRate());
         return loan;
     }
-    public static Account toAccountEntity(AccountRequestDTO dto) {
+    public static Accounts toAccountEntity(AccountRequestDTO dto) {
         if (dto == null) return null;
-        Account account = new Account();
+        Accounts account = new Accounts();
         account.setAccountType(dto.getAccountType());
         account.setCurrentBalance(dto.getCurrentBalance());
         account.setStatus(dto.getStatus());

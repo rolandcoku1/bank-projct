@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.historical.repository",
+        basePackages = "com.wearhouse.bankproject.repository.historical",
         entityManagerFactoryRef = "historicalEntityManagerFactory",
         transactionManagerRef = "historicalTransactionManager"
 )
@@ -35,11 +35,11 @@ public class HistoricalDbConfig {
             @Qualifier("historicalDataSource") DataSource dataSource) {
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "none");
+        properties.put("hibernate.hbm2ddl.auto", "update");
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.historical.entity")
+                .packages("com.wearhouse.bankproject.model.historical")
                 .persistenceUnit("historical")
                 .properties(properties)
                 .build();

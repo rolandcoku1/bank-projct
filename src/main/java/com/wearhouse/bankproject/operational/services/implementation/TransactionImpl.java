@@ -2,7 +2,7 @@ package com.wearhouse.bankproject.operational.services.implementation;
 import com.wearhouse.bankproject.operational.dto.MapperDTO;
 import com.wearhouse.bankproject.operational.dto.TransactionRequestDTO;
 import com.wearhouse.bankproject.operational.dto.TransactionResponseDTO;
-import com.wearhouse.bankproject.operational.entity.Account;
+import com.wearhouse.bankproject.operational.entity.Accounts;
 import com.wearhouse.bankproject.operational.entity.Transaction;
 import com.wearhouse.bankproject.operational.entity.User;
 import com.wearhouse.bankproject.operational.repository.AccountRepository;
@@ -35,7 +35,7 @@ public class TransactionImpl implements TransactionService {
 
     @Override
     public TransactionResponseDTO createTransaction(TransactionRequestDTO dto) {
-        Account account = accountRepository.findById(dto.getAccountId())
+        Accounts account = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -57,7 +57,7 @@ public class TransactionImpl implements TransactionService {
         if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0)
             throw new RuntimeException("Deposit amount must be positive");
 
-        Account account = accountRepository.findById(dto.getAccountId())
+        Accounts account = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -81,7 +81,7 @@ public class TransactionImpl implements TransactionService {
         if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0)
             throw new RuntimeException("Withdrawal amount must be positive");
 
-        Account account = accountRepository.findById(dto.getAccountId())
+        Accounts account = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Account not found"));
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -108,9 +108,9 @@ public class TransactionImpl implements TransactionService {
         if (dto.getAmount().compareTo(BigDecimal.ZERO) <= 0)
             throw new RuntimeException("Transfer amount must be positive");
 
-        Account fromAccount = accountRepository.findById(dto.getAccountId())
+        Accounts fromAccount = accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new RuntimeException("Source account not found"));
-        Account toAccount = accountRepository.findById(dto.getUserId()) // përdor userId si destinationAccountId
+        Accounts toAccount = accountRepository.findById(dto.getUserId()) // përdor userId si destinationAccountId
                 .orElseThrow(() -> new RuntimeException("Destination account not found"));
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));

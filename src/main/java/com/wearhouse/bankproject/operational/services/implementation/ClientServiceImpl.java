@@ -3,7 +3,7 @@ package com.wearhouse.bankproject.operational.services.implementation;
 import com.wearhouse.bankproject.operational.dto.ClientRequestDTO;
 import com.wearhouse.bankproject.operational.dto.ClientResponseDTO;
 import com.wearhouse.bankproject.operational.dto.MapperDTO;
-import com.wearhouse.bankproject.operational.entity.Client;
+import com.wearhouse.bankproject.operational.entity.Clients;
 import com.wearhouse.bankproject.operational.repository.ClientRepository;
 import com.wearhouse.bankproject.operational.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientResponseDTO createClient(ClientRequestDTO dto) {
-        Client client = MapperDTO.toClientEntity(dto);
-        Client savedClient = clientRepository.save(client);
+        Clients client = MapperDTO.toClientEntity(dto);
+        Clients savedClient = clientRepository.save(client);
         return MapperDTO.toClientResponseDTO(savedClient);
     }
 
     @Override
     public ClientResponseDTO updateClient(Integer id, ClientRequestDTO dto) {
-        Client client = clientRepository.findById(id)
+        Clients client = clientRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Client not found with id: " + id));
 
         client.setFullName(dto.getFullName());
@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
         client.setPhone(dto.getPhone());
         client.setAddress(dto.getAddress());
 
-        Client updatedClient = clientRepository.save(client);
+        Clients updatedClient = clientRepository.save(client);
         return MapperDTO.toClientResponseDTO(updatedClient);
     }
 

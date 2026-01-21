@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Accounts {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Account {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    private Client client;
+    private Clients client;
 
     @Column(name = "account_type", length = 20)
     private String accountType;
@@ -44,7 +44,7 @@ public class Account {
         this.accountId = accountId;
     }
 
-    public Client getClient() {
+    public Clients getClient() {
         return client;
     }
 
@@ -56,7 +56,7 @@ public class Account {
         return accountId;
     }
 
-    public void setClient(Client client) {
+    public void setClient(Clients client) {
         this.client = client;
     }
 

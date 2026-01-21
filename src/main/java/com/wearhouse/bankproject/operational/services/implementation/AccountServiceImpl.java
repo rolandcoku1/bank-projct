@@ -3,8 +3,8 @@ package com.wearhouse.bankproject.operational.services.implementation;
 import com.wearhouse.bankproject.operational.dto.AccountRequestDTO;
 import com.wearhouse.bankproject.operational.dto.AccountResponseDTO;
 import com.wearhouse.bankproject.operational.dto.MapperDTO;
-import com.wearhouse.bankproject.operational.entity.Account;
-import com.wearhouse.bankproject.operational.entity.Client;
+import com.wearhouse.bankproject.operational.entity.Accounts;
+import com.wearhouse.bankproject.operational.entity.Clients;
 import com.wearhouse.bankproject.operational.repository.AccountRepository;
 import com.wearhouse.bankproject.operational.repository.ClientRepository;
 import com.wearhouse.bankproject.operational.services.AccountService;
@@ -28,26 +28,26 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDTO createAccount(AccountRequestDTO dto) {
-        Account account = MapperDTO.toAccountEntity(dto);
+        Accounts account = MapperDTO.toAccountEntity(dto);
 
-        Client client = clientRepository.findById(dto.getClientId())
+        Clients client = clientRepository.findById(dto.getClientId())
                 .orElseThrow(() -> new RuntimeException("Client not found with id: " + dto.getClientId()));
         account.setClient(client);
 
-        Account savedAccount = accountRepository.save(account);
+        Accounts savedAccount = accountRepository.save(account);
         return MapperDTO.toAccountResponseDTO(savedAccount);
     }
 
     @Override
     public AccountResponseDTO updateAccount(Integer id, AccountRequestDTO dto) {
-        Account account = accountRepository.findById(id)
+        Accounts account = accountRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account not found with id: " + id));
 
         account.setAccountType(dto.getAccountType());
         account.setCurrentBalance(dto.getCurrentBalance());
         account.setStatus(dto.getStatus());
 
-        Account updatedAccount = accountRepository.save(account);
+        Accounts updatedAccount = accountRepository.save(account);
         return MapperDTO.toAccountResponseDTO(updatedAccount);
     }
 
@@ -99,11 +99,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponseDTO updateBalance(Integer accountId, BigDecimal amount) {
-        Account account = accountRepository.findById(accountId)
+        Accounts account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found with id: " + accountId));
 
         account.setCurrentBalance(account.getCurrentBalance().add(amount));
-        Account updatedAccount = accountRepository.save(account);
+        Accounts updatedAccount = accountRepository.save(account);
         return MapperDTO.toAccountResponseDTO(updatedAccount);
     }
 }

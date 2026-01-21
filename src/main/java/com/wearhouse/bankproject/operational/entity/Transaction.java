@@ -19,7 +19,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account account;
+    private Accounts account;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -53,11 +53,11 @@ public class Transaction {
         this.loanId = loanId;
     }
 
-    public Account getAccount() {
+    public Accounts getAccount() {
         return account;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(Accounts account) {
         this.account = account;
     }
 

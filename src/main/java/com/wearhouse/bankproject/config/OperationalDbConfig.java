@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.operational.repository",
+        basePackages = "com.wearhouse.bankproject.operational.repository", // korrigjuar
         entityManagerFactoryRef = "operationalEntityManagerFactory",
         transactionManagerRef = "operationalTransactionManager"
 )
@@ -44,11 +44,11 @@ public class OperationalDbConfig {
             @Qualifier("operationalDataSource") DataSource dataSource) {
 
         Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "none");
+        properties.put("hibernate.hbm2ddl.auto", "update");
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.operational.entity")
+                .packages("com.wearhouse.bankproject.operational.entity") // korrigjuar
                 .persistenceUnit("operational")
                 .properties(properties)
                 .build();

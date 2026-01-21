@@ -32,3 +32,12 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/application.properties
+# Environment / secrets
+.env
+application.properties
+application.yml
+
+# IDE
+.idea/
+
+

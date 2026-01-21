@@ -70,7 +70,6 @@ public class UserController {
 
         return ResponseEntity.ok(userService.updateUser(id, dto));
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);

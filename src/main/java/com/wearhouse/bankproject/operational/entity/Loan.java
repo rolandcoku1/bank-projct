@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Loans {
+public class Loan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class Loans {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
-    private Clients client;
+    private Client client;
 
     @Column(name = "loan_amount", precision = 15, scale = 2)
     private BigDecimal loanAmount;
@@ -42,11 +42,11 @@ public class Loans {
         this.status = status;
     }
 
-    public Clients getClient() {
+    public Client getClient() {
         return client;
     }
 
-    public void setClient(Clients client) {
+    public void setClient(Client client) {
         this.client = client;
     }
 

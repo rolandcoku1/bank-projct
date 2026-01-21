@@ -21,7 +21,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.operational.repository", // korrigjuar
+        basePackages = "com.wearhouse.bankproject.operational.repository",
         entityManagerFactoryRef = "operationalEntityManagerFactory",
         transactionManagerRef = "operationalTransactionManager"
 )
@@ -48,7 +48,7 @@ public class OperationalDbConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.operational.entity") // korrigjuar
+                .packages("com.wearhouse.bankproject.operational.entity")
                 .persistenceUnit("operational")
                 .properties(properties)
                 .build();

@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Clients {
+public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +34,10 @@ public class Clients {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Accounts> accounts;
+    private List<Account> accounts;
 
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
-    private List<Loans> loans;
+    private List<Loan> loans;
 
     @PrePersist
     protected void onCreate() {
@@ -64,11 +64,11 @@ public class Clients {
         return clientId;
     }
 
-    public void setAccounts(List<Accounts> accounts) {
+    public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
 
-    public List<Accounts> getAccounts() {
+    public List<Account> getAccounts() {
         return accounts;
     }
 
@@ -76,7 +76,7 @@ public class Clients {
         this.clientId = clientId;
     }
 
-    public List<Loans> getLoans() {
+    public List<Loan> getLoans() {
         return loans;
     }
 
@@ -96,7 +96,7 @@ public class Clients {
         return fullName;
     }
 
-    public void setLoans(List<Loans> loans) {
+    public void setLoans(List<Loan> loans) {
         this.loans = loans;
     }
 

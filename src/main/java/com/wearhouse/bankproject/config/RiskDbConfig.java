@@ -18,7 +18,7 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.repository.risk",
+        basePackages = "com.wearhouse.bankproject.risk.repository",
         entityManagerFactoryRef = "riskEntityManagerFactory",
         transactionManagerRef = "riskTransactionManager"
 )
@@ -42,7 +42,7 @@ public class RiskDbConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.model.risk")
+                .packages("com.wearhouse.bankproject.risk.entity")
                 .persistenceUnit("risk")
                 .properties(properties)
                 .build();

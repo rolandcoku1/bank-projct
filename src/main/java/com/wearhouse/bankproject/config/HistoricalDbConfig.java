@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(
-        basePackages = "com.wearhouse.bankproject.repository.historical",
+        basePackages = "com.wearhouse.bankproject.historical.repository",
         entityManagerFactoryRef = "historicalEntityManagerFactory",
         transactionManagerRef = "historicalTransactionManager"
 )
@@ -39,7 +39,7 @@ public class HistoricalDbConfig {
 
         return builder
                 .dataSource(dataSource)
-                .packages("com.wearhouse.bankproject.model.historical")
+                .packages("com.wearhouse.bankproject.historical.entity")
                 .persistenceUnit("historical")
                 .properties(properties)
                 .build();

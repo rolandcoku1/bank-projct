@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- Sidebar Navigation -->
 <div class="sidebar">
     <div class="sidebar-header">
         <h2>🏦 Bank System</h2>
@@ -48,10 +47,8 @@
     </div>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
 
-    <!-- Dashboard -->
     <div id="dashboard" class="content-section active">
         <div class="page-header">
             <h1>Dashboard</h1>
@@ -62,7 +59,6 @@
         <div class="transaction-list" id="recentTransactions"></div>
     </div>
 
-    <!-- Clients -->
     <div id="clients" class="content-section">
         <div class="page-header">
             <h1>Client Management</h1>
@@ -94,7 +90,6 @@
         </div>
     </div>
 
-    <!-- Accounts -->
     <div id="accounts" class="content-section">
         <div class="search-bar">
             <input type="text" placeholder="Search accounts..." onkeyup="searchAccounts(this.value)">
@@ -131,7 +126,6 @@
         </div>
     </div>
 
-    <!-- Loans -->
     <div id="loans" class="content-section">
         <div class="page-header">
             <h1>Loan Management</h1>
@@ -253,7 +247,6 @@
         </div>
     </div>
 
-    <!-- Users -->
     <div id="users" class="content-section">
         <div class="page-header">
             <h1>User Management</h1>
@@ -283,9 +276,14 @@
 
 </div>
 
-<!-- Modals -->
 <div id="modalContainer"></div>
 
+<script src="/js/main.js"></script>
 <script src="/js/dashboard.js"></script>
+<script src="/js/clients.js"></script>
+<script src="/js/accounts.js"></script>
+<script src="/js/loans.js"></script>
+<script src="/js/transaction.js"></script>
+<script src="/js/users.js"></script>
 </body>
 </html>

@@ -9,16 +9,13 @@ function showMessage(form, text, type = 'error') {
     msgDiv.className = 'message ' + type;
 }
 
-/* =========================
-   REGISTER
-========================= */
 const registerForm = document.getElementById('register-form');
 if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const data = Object.fromEntries(new FormData(registerForm).entries());
-        data.role = "teller"; // default role
+        data.role = "teller";
 
         try {
             const response = await fetch('http://localhost:8080/api/auth/register', {
@@ -42,10 +39,6 @@ if (registerForm) {
         }
     });
 }
-
-/* =========================
-   LOGIN
-========================= */
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
@@ -65,28 +58,33 @@ if (loginForm) {
             if (!response.ok) {
                 showMessage(loginForm, result.message || 'Login failed');
             } else {
-                // 🔑 RUAN SAKTË TOKEN + ROLE
+                let role = result.role;
+                if (role && !role.startsWith('ROLE_')) {
+                    role = 'ROLE_' + role.toUpperCase();
+                }
                 localStorage.setItem("token", result.token);
-                localStorage.setItem("role", result.role);
+                localStorage.setItem("userRole", role);
+                localStorage.setItem("userEmail", data.email);
+                localStorage.setItem("userId", result.id || result.userId || '1');
                 localStorage.setItem("user", JSON.stringify(result));
 
-                window.location.href = 'dashboard';
+
+                setTimeout(() => {
+                    window.location.href = 'dashboard';
+                }, 500);
             }
         } catch (err) {
+            console.error('Login error:', err);
             showMessage(loginForm, 'Server error');
         }
     });
 }
-
-/* =========================
-   AUTH HELPERS (GLOBAL)
-========================= */
 function getToken() {
     return localStorage.getItem("token");
 }
 
 function getRole() {
-    return localStorage.getItem("role");
+    return localStorage.getItem("userRole");
 }
 
 function logout() {

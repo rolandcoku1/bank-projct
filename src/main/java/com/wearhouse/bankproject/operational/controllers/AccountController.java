@@ -2,6 +2,7 @@ package com.wearhouse.bankproject.operational.controllers;
 import com.wearhouse.bankproject.operational.dto.AccountRequestDTO;
 import com.wearhouse.bankproject.operational.dto.AccountResponseDTO;
 import com.wearhouse.bankproject.operational.services.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -95,4 +96,5 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 }

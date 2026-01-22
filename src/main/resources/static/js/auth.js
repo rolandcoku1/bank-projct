@@ -9,12 +9,16 @@ function showMessage(form, text, type = 'error') {
     msgDiv.className = 'message ' + type;
 }
 
+/* =========================
+   REGISTER
+========================= */
 const registerForm = document.getElementById('register-form');
 if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const data = Object.fromEntries(new FormData(registerForm).entries());
-        data.role = "teller";
+        data.role = "teller"; // default role
 
         try {
             const response = await fetch('http://localhost:8080/api/auth/register', {
@@ -22,26 +26,31 @@ if (registerForm) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
+
             const result = await response.json();
 
             if (!response.ok) {
-                showMessage(registerForm, result.message || 'Registration failed', 'error');
+                showMessage(registerForm, result.message || 'Registration failed');
             } else {
+                showMessage(registerForm, 'Registration successful!', 'success');
                 setTimeout(() => {
-                    window.location.href = '/login';
+                    window.location.href = 'login.html';
                 }, 1500);
             }
         } catch (err) {
-            console.error(err);
-            showMessage(registerForm, 'Error connecting to server', 'error');
+            showMessage(registerForm, 'Server error');
         }
     });
 }
 
+/* =========================
+   LOGIN
+========================= */
 const loginForm = document.getElementById('login-form');
 if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
         const data = Object.fromEntries(new FormData(loginForm).entries());
 
         try {
@@ -50,19 +59,37 @@ if (loginForm) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
+
             const result = await response.json();
 
             if (!response.ok) {
-                showMessage(loginForm, result.message || 'Login failed', 'error');
+                showMessage(loginForm, result.message || 'Login failed');
             } else {
-                localStorage.setItem('user', JSON.stringify(result));
-                setTimeout(() => {
-                    window.location.href = '/dashboard';
-                }, 1000);
+                // 🔑 RUAN SAKTË TOKEN + ROLE
+                localStorage.setItem("token", result.token);
+                localStorage.setItem("role", result.role);
+                localStorage.setItem("user", JSON.stringify(result));
+
+                window.location.href = 'dashboard';
             }
         } catch (err) {
-            console.error(err);
-            showMessage(loginForm, 'Error connecting to server', 'error');
+            showMessage(loginForm, 'Server error');
         }
     });
+}
+
+/* =========================
+   AUTH HELPERS (GLOBAL)
+========================= */
+function getToken() {
+    return localStorage.getItem("token");
+}
+
+function getRole() {
+    return localStorage.getItem("role");
+}
+
+function logout() {
+    localStorage.clear();
+    window.location.href = 'login';
 }

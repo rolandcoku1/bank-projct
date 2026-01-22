@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li class="nav-item active" onclick="showSection('dashboard', event)">Dashboard</li>
+            <li class="nav-item" onclick="showSection('clients', event)">Clients</li>
+            <li class="nav-item" onclick="showSection('accounts', event)">Accounts</li>
+            <li class="nav-item" onclick="showSection('loans', event)">Loans</li>
+            <li class="nav-item" onclick="showSection('transactions', event)">Transactions</li>
+            <li class="nav-item" onclick="showSection('users', event)">Users</li>
+            <li class="nav-item" onclick="logout()">Logout</li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main-content">
+    <!-- Sections -->
+    <section id="dashboard" class="content-section active">
+        <div id="statsGrid"></div>
+        <div id="recentTransactions"></div>
+    </section>
+
+    <section id="clients" class="content-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="clientsTableBody"></tbody>
+        </table>
+    </section>
+
+    <section id="accounts" class="content-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="accountsTableBody"></tbody>
+        </table>
+    </section>
+
+    <section id="loans" class="content-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Client</th>
+                <th>Amount</th>
+                <th>Interest</th>
+                <th>Start Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="loansTableBody"></tbody>
+        </table>
+    </section>
+
+    <section id="transactions" class="content-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Account</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody id="transactionsTableBody"></tbody>
+        </table>
+    </section>
+
+    <section id="users" class="content-section">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+        </table>
+    </section>
+</main>
+
+<div id="modalContainer"></div>
+
+<script src="/js/dashboard.js"></script>
+</body>
+</html>

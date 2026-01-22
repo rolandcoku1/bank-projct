@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Management System</title>
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+
+<!-- Sidebar Navigation -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h2>🏦 Bank System</h2>
+        <span class="user-role-badge" id="sidebarRole">ADMIN</span>
+    </div>
+
+    <ul class="nav-menu">
+        <li class="nav-item active" onclick="showSection('dashboard')">
+            <span class="nav-icon">📊</span>
+            <span>Dashboard</span>
+        </li>
+        <li class="nav-item" onclick="showSection('clients')">
+            <span class="nav-icon">👥</span>
+            <span>Clients</span>
+        </li>
+        <li class="nav-item" onclick="showSection('accounts')">
+            <span class="nav-icon">💳</span>
+            <span>Accounts</span>
+        </li>
+        <li class="nav-item" onclick="showSection('loans')">
+            <span class="nav-icon">💰</span>
+            <span>Loans</span>
+        </li>
+        <li class="nav-item" onclick="showSection('transactions')">
+            <span class="nav-icon">🔄</span>
+            <span>Transactions</span>
+        </li>
+        <li class="nav-item" onclick="showSection('users')">
+            <span class="nav-icon">👤</span>
+            <span>Users</span>
+        </li>
+    </ul>
+
+    <div class="logout-item" onclick="logout()">
+        <span class="nav-icon">🚪</span>
+        <span>Logout</span>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+    <!-- Dashboard -->
+    <div id="dashboard" class="content-section active">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <p>Overview of your bank management system</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+        <div class="transaction-list" id="recentTransactions"></div>
+    </div>
+
+    <!-- Clients -->
+    <div id="clients" class="content-section">
+        <div class="page-header">
+            <h1>Client Management</h1>
+            <p>Manage all your bank clients</p>
+        </div>
+        <div class="data-table-container">
+            <div class="table-header">
+                <h2>All Clients</h2>
+                <button class="btn btn-primary" onclick="openClientModal()">+ Add Client</button>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search clients..." onkeyup="searchClients(this.value)">
+            </div>
+            <table id="clientsTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="clientsTableBody">
+                <tr><td colspan="6" class="loading">Loading clients...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Accounts -->
+    <div id="accounts" class="content-section">
+        <div class="search-bar">
+            <input type="text" placeholder="Search accounts..." onkeyup="searchAccounts(this.value)">
+        </div>
+        <div class="page-header">
+            <h1>Account Management</h1>
+            <p>Manage client accounts</p>
+        </div>
+
+        <div class="data-table-container">
+            <div class="table-header">
+                <h2>All Accounts</h2>
+                <button class="btn btn-primary" onclick="openAccountModal()">+ Add Account</button>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search accounts..." onkeyup="searchAccounts(this.value)">
+            </div>
+            <table id="accountsTable">
+
+                <thead>
+                <tr>
+                    <th>Account ID</th>
+                    <th>Client</th>
+                    <th>Type</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="accountsTableBody">
+                <tr><td colspan="6" class="loading">Loading accounts...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Loans -->
+    <div id="loans" class="content-section">
+        <div class="page-header">
+            <h1>Loan Management</h1>
+            <p>Manage client loans</p>
+        </div>
+        <div class="data-table-container">
+            <div class="table-header">
+                <h2>All Loans</h2>
+                <button class="btn btn-primary" onclick="openLoanModal()">+ Add Loan</button>
+            </div>
+            <table id="loansTable">
+                <thead>
+                <tr>
+                    <th>Loan ID</th>
+                    <th>Client</th>
+                    <th>Amount</th>
+                    <th>Interest Rate</th>
+                    <th>Start Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="loansTableBody">
+                <tr><td colspan="7" class="loading">Loading loans...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Transactions -->
+    <div id="transactions" class="content-section">
+        <div class="page-header">
+            <h1>Transactions</h1>
+            <p>Make deposits, withdrawals, and transfers</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <div class="form-container">
+                <h3>💵 Deposit</h3>
+                <form onsubmit="makeDeposit(event)">
+                    <div class="form-group">
+                        <label>Account ID</label>
+                        <input type="number" id="depositAccountId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" step="0.01" id="depositAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="depositDescription">
+                    </div>
+                    <button type="submit" class="btn btn-success">Make Deposit</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h3>💸 Withdrawal</h3>
+                <form onsubmit="makeWithdrawal(event)">
+                    <div class="form-group">
+                        <label>Account ID</label>
+                        <input type="number" id="withdrawAccountId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" step="0.01" id="withdrawAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="withdrawDescription">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Make Withdrawal</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <h3>🔄 Transfer</h3>
+                <form onsubmit="makeTransfer(event)">
+                    <div class="form-group">
+                        <label>From Account ID</label>
+                        <input type="number" id="transferFromAccountId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>To Account ID</label>
+                        <input type="number" id="transferToAccountId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount</label>
+                        <input type="number" step="0.01" id="transferAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <input type="text" id="transferDescription">
+                    </div>
+                    <button type="submit" class="btn btn-warning">Make Transfer</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="data-table-container">
+            <div class="table-header">
+                <h2>Transaction History</h2>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Account</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody id="transactionsTableBody">
+                <tr><td colspan="6" class="loading">Loading transactions...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Users -->
+    <div id="users" class="content-section">
+        <div class="page-header">
+            <h1>User Management</h1>
+            <p>Manage system users</p>
+        </div>
+        <div class="data-table-container">
+            <div class="table-header">
+                <h2>All Users</h2>
+                <button class="btn btn-primary" onclick="openUserModal()">+ Add User</button>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                <tr><td colspan="5" class="loading">Loading users...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modals -->
+<div id="modalContainer"></div>
+
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
